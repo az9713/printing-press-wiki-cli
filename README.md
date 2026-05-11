@@ -10,49 +10,32 @@ Learn more at [Wikipedia](https://www.mediawiki.org/wiki/Wikimedia_REST_API).
 
 ## Install
 
-The recommended path installs both the `wikipedia-pp-cli` binary and the `pp-wikipedia` agent skill in one shot:
+### Build from source (requires Go 1.21+)
 
 ```bash
-npx -y @mvanhorn/printing-press install wikipedia
+git clone https://github.com/az9713/printing-press-wiki-cli.git
+cd printing-press-wiki-cli
+
+# Build the CLI binary
+go build -o wikipedia-pp-cli ./cmd/wikipedia-pp-cli/
+
+# Optional: move it somewhere on your PATH
+mv wikipedia-pp-cli /usr/local/bin/          # macOS / Linux
+# On Windows (Git Bash): mv wikipedia-pp-cli.exe "$HOME/go/bin/"
 ```
 
-For CLI only (no skill):
+Verify the install:
 
 ```bash
-npx -y @mvanhorn/printing-press install wikipedia --cli-only
+wikipedia-pp-cli --version
+# wikipedia-pp-cli 1.0.0
+
+wikipedia-pp-cli doctor
+# OK  API: reachable
+# OK  Auth: not required
 ```
 
-
-### Without Node
-
-The generated install path is category-agnostic until this CLI is published. If `npx` is not available before publish, install Node or use the category-specific Go fallback from the public-library entry after publish.
-
-### Pre-built binary
-
-Download a pre-built binary for your platform from the [latest release](https://github.com/mvanhorn/printing-press-library/releases/tag/wikipedia-current). On macOS, clear the Gatekeeper quarantine: `xattr -d com.apple.quarantine <binary>`. On Unix, mark it executable: `chmod +x <binary>`.
-
-<!-- pp-hermes-install-anchor -->
-## Install for Hermes
-
-From the Hermes CLI:
-
-```bash
-hermes skills install mvanhorn/printing-press-library/cli-skills/pp-wikipedia --force
-```
-
-Inside a Hermes chat session:
-
-```bash
-/skills install mvanhorn/printing-press-library/cli-skills/pp-wikipedia --force
-```
-
-## Install for OpenClaw
-
-Tell your OpenClaw agent (copy this):
-
-```
-Install the pp-wikipedia skill from https://github.com/mvanhorn/printing-press-library/tree/main/cli-skills/pp-wikipedia. The skill defines how its required CLI can be installed.
-```
+No API key required — Wikipedia's REST API is fully public.
 
 ## Quick Start
 
@@ -185,64 +168,40 @@ This CLI is designed for AI agent consumption:
 
 Exit codes: `0` success, `2` usage error, `3` not found, `5` API error, `7` rate limited, `10` config error.
 
-## Use with Claude Code
+## Use as an MCP server
 
-Install the focused skill — it auto-installs the CLI on first invocation:
-
-```bash
-npx skills add mvanhorn/printing-press-library/cli-skills/pp-wikipedia -g
-```
-
-Then invoke `/pp-wikipedia <query>` in Claude Code. The skill is the most efficient path — Claude Code drives the CLI directly without an MCP server in the middle.
-
-<details>
-<summary>Use as an MCP server in Claude Code (advanced)</summary>
-
-If you'd rather register this CLI as an MCP server in Claude Code, install the MCP binary first:
-
-
-Install the MCP binary from this CLI's published public-library entry or pre-built release.
-
-Then register it:
+Build the MCP server binary from source:
 
 ```bash
-claude mcp add wikipedia wikipedia-pp-mcp
+go build -o wikipedia-pp-mcp ./cmd/wikipedia-pp-mcp/
 ```
 
-</details>
+### Claude Code
 
-## Use with Claude Desktop
+Register the MCP server:
 
-This CLI ships an [MCPB](https://github.com/modelcontextprotocol/mcpb) bundle — Claude Desktop's standard format for one-click MCP extension installs (no JSON config required).
+```bash
+claude mcp add wikipedia ./wikipedia-pp-mcp
+```
 
-To install:
+### Claude Desktop
 
-1. Download the `.mcpb` for your platform from the [latest release](https://github.com/mvanhorn/printing-press-library/releases/tag/wikipedia-current).
-2. Double-click the `.mcpb` file. Claude Desktop opens and walks you through the install.
+Add to your Claude Desktop config:
 
-Requires Claude Desktop 1.0.0 or later. Pre-built bundles ship for macOS Apple Silicon (`darwin-arm64`) and Windows (`amd64`, `arm64`); for other platforms, use the manual config below.
-
-<details>
-<summary>Manual JSON config (advanced)</summary>
-
-If you can't use the MCPB bundle (older Claude Desktop, unsupported platform), install the MCP binary and configure it manually.
-
-
-Install the MCP binary from this CLI's published public-library entry or pre-built release.
-
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
   "mcpServers": {
     "wikipedia": {
-      "command": "wikipedia-pp-mcp"
+      "command": "/path/to/wikipedia-pp-mcp"
     }
   }
 }
 ```
 
-</details>
+Replace `/path/to/wikipedia-pp-mcp` with the absolute path to the binary you built.
 
 ## Health Check
 
