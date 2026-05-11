@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-11T06:38:03.6978297Z",
+  "printing_press_version": "4.2.2",
+  "api_name": "wikipedia",
+  "cli_name": "wikipedia-pp-cli",
+  "printer": "az9713",
+  "printer_name": "az9713",
+  "run_id": "20260510-212353",
+  "novel_features": [
+    {
+      "name": "On-This-Day Feed",
+      "command": "on-this-day",
+      "description": "Get curated historical events, births, deaths, and holidays for any calendar date."
+    },
+    {
+      "name": "Agent-Native Unified Flag",
+      "command": "summary --agent",
+      "description": "Single --agent flag activates JSON output, compact fields, and deterministic exit codes across every command."
+    },
+    {
+      "name": "Disambiguation Exit Code",
+      "command": "summary",
+      "description": "Exit code 3 on disambiguation pages so callers know to clarify the query, not just retry."
+    },
+    {
+      "name": "Field Selection",
+      "command": "summary --select",
+      "description": "Narrow JSON output to exactly the fields you need across every command."
+    },
+    {
+      "name": "Local Summary Cache",
+      "command": "sync",
+      "description": "Sync article summaries to a local SQLite store for offline re-queries and custom SQL."
+    },
+    {
+      "name": "Featured Article",
+      "command": "feed featured",
+      "description": "Get Wikipedia's featured article for any date — the highest-quality content on the site."
+    }
+  ]
+}

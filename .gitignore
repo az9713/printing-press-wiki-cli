@@ -1,0 +1,4 @@
+*.exe
+wikipedia-pp-cli
+dogfood-results.json
+workflow-verify-report.json
