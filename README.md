@@ -6,6 +6,8 @@ wikipedia-pp-cli wraps the Wikipedia REST API in five focused commands: search, 
 
 Learn more at [Wikipedia](https://www.mediawiki.org/wiki/Wikimedia_REST_API).
 
+> **Built with [CLI Printing Press](https://github.com/mvanhorn/cli-printing-press)** — an open-source generator that turns an OpenAPI spec into a production-quality Go CLI with offline search, SQLite caching, structured JSON output, and an MCP server surface. See [`generate-wikipedia-cli-git-bash-windows.md`](generate-wikipedia-cli-git-bash-windows.md) for a step-by-step walkthrough of how this CLI was generated on Windows.
+
 ## Install
 
 The recommended path installs both the `wikipedia-pp-cli` binary and the `pp-wikipedia` agent skill in one shot:
@@ -72,7 +74,7 @@ wikipedia-pp-cli random --compact
 
 
 # Full article as plain text — first 2000 chars
-wikipedia-pp-cli page "Python (programming language)" --format text --limit 2000
+wikipedia-pp-cli article "Python (programming language)" --format text --limit 2000
 
 ```
 
@@ -154,19 +156,19 @@ Manage page
 
 ```bash
 # Human-readable table (default in terminal, JSON when piped)
-wikipedia-pp-cli feed featured mock-value mock-value mock-value
+wikipedia-pp-cli feed featured 2026 05 10
 
 # JSON for scripting and agents
-wikipedia-pp-cli feed featured mock-value mock-value mock-value --json
+wikipedia-pp-cli feed featured 2026 05 10 --json
 
 # Filter to specific fields
-wikipedia-pp-cli feed featured mock-value mock-value mock-value --json --select id,name,status
+wikipedia-pp-cli feed featured 2026 05 10 --json --select id,name,status
 
 # Dry run — show the request without sending
-wikipedia-pp-cli feed featured mock-value mock-value mock-value --dry-run
+wikipedia-pp-cli feed featured 2026 05 10 --dry-run
 
 # Agent mode — JSON + compact + no prompts in one flag
-wikipedia-pp-cli feed featured mock-value mock-value mock-value --agent
+wikipedia-pp-cli feed featured 2026 05 10 --agent
 ```
 
 ## Agent Usage
